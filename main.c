@@ -2,13 +2,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "scanner.h"
+
+
 enum {
     BUF_MAX = 128,
 };
 
 
 void run(char *line) {
-    printf("%s", line);
+    struct Token *tokens = NULL;
+    size_t n_tokens = scan_tokens(line, &tokens);
+    for (size_t i = 0; i < n_tokens; i++) {
+        token_print(tokens + i);
+        putchar('\n');
+    }
+
+    free_tokens(tokens, n_tokens);
 }
 
 
@@ -46,7 +56,7 @@ void run_script(char *filename) {
 
     buffer[flength] = 0;
     run(buffer);
-    free(fcontents);
+    free(buffer);
 }
 
 
