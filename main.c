@@ -1,0 +1,72 @@
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+enum {
+    BUF_MAX = 128,
+};
+
+
+void run(char *line) {
+    printf("%s", line);
+}
+
+
+void run_script(char *filename) {
+    FILE *fp = fopen(filename, "rb");
+    if (fseek(fp, 0, SEEK_END) == -1) {
+        perror(NULL);
+        exit(EXIT_FAILURE);
+    }
+
+    long flength = ftell(fp);
+    if (flength == -1) {
+        perror(NULL);
+        exit(EXIT_FAILURE);
+    }
+
+    if (fseek(fp, 0, SEEK_SET) == -1) {
+        perror(NULL);
+        exit(EXIT_FAILURE);
+    }
+
+    char *buffer = malloc(flength + 1);
+
+    long ret = fread(buffer, 1, flength, fp);
+
+    if (ret != flength && feof(fp)) {
+        perror(NULL);
+        exit(EXIT_FAILURE);
+    }
+
+    fclose(fp);
+
+    buffer[flength] = 0;
+    run(buffer);
+    free(fcontents);
+}
+
+
+void run_prompt() {
+    char buffer[BUF_MAX];
+
+    printf("klang> ");
+    while (fgets(buffer, BUF_MAX, stdin)) {
+        run(buffer);
+        printf("klang> ");
+    }
+
+    putchar('\n');
+}
+
+
+int main(int argc, char *argv[]) {
+    if (argc > 2) {
+        fprintf(stderr, "usage: klang [filename]\n");
+        exit(EXIT_FAILURE);
+    } else if (argc == 2) {
+        run_script(*++argv);
+    } else {
+        run_prompt();
+    }
+}
