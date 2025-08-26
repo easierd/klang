@@ -15,27 +15,30 @@ void run(char *line) {
 void run_script(char *filename) {
     FILE *fp = fopen(filename, "rb");
     if (fseek(fp, 0, SEEK_END) == -1) {
-        perror(NULL);
+        perror("fseek");
         exit(EXIT_FAILURE);
     }
 
     long flength = ftell(fp);
     if (flength == -1) {
-        perror(NULL);
+        perror("ftell");
         exit(EXIT_FAILURE);
     }
 
     if (fseek(fp, 0, SEEK_SET) == -1) {
-        perror(NULL);
+        perror("fseek");
         exit(EXIT_FAILURE);
     }
 
     char *buffer = malloc(flength + 1);
+    if (buffer == NULL) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
 
     long ret = fread(buffer, 1, flength, fp);
-
     if (ret != flength && feof(fp)) {
-        perror(NULL);
+        perror("fread");
         exit(EXIT_FAILURE);
     }
 
