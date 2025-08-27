@@ -62,26 +62,22 @@ struct Vector *scan_tokens(char *line) {
         switch(c) {
             case '(':
                 if (!append_token(token_list, LEFT_PAREN)) {
-                    vector_free(token_list, token_free);
-                    return NULL;
+                    goto cleanup;
                 }
                 break;
             case ')':
                 if (!append_token(token_list, RIGHT_PAREN)) {
-                    vector_free(token_list, token_free);
-                    return NULL;
+                    goto cleanup;
                 }
                 break;
             case '{':
                 if (!append_token(token_list, LEFT_BRACE)) {
-                    vector_free(token_list, token_free);
-                    return NULL;
+                    goto cleanup;
                 }
                 break;
             case '}':
                 if (!append_token(token_list, RIGHT_BRACE)) {
-                    vector_free(token_list, token_free);
-                    return NULL;
+                    goto cleanup;
                 }
                 break;
             default:
@@ -93,4 +89,7 @@ struct Vector *scan_tokens(char *line) {
     }
 
     return token_list;
+cleanup:
+    vector_free(token_list, token_free);
+    return NULL;
 }
