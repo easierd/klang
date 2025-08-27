@@ -8,11 +8,17 @@
 
 /*
  * Global variable used to signal errors among the 
- * components of the interpreter
+ * components of the interpreter.
  */
-extern bool has_error;
+extern bool klang_has_error;
 
 /*
- * Report an error message, occurred at the given line, on stderr
+ * Report an error message, occurred at the given line, on stderr.
  */
-void error_report(int line, char *msg);
+void klang_error_report(int line, char *msg);
+
+
+/* 
+ * Reset the global error flag.
+ */
+void klang_error_reset(void);

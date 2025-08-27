@@ -114,7 +114,7 @@ struct Vector *scan_tokens(char *line) {
                 char err[32];
                 snprintf(err, 32, "Unexpected character %c", c); 
                 err[31] = 0;
-                error_report(0, err);
+                klang_error_report(0, err);
         }
     }
 

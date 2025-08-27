@@ -69,7 +69,7 @@ void run_prompt() {
     printf("klang> ");
     while (fgets(buffer, BUF_MAX, stdin)) {
         run(buffer);
-        has_error = false;
+        klang_error_reset();
         printf("klang> ");
     }
 

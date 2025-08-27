@@ -3,9 +3,15 @@
 #include "error.h"
 
 
-bool has_error = false;
+bool klang_has_error = false;
 
-void error_report(int line, char *msg) {
+
+void klang_error_report(int line, char *msg) {
     fprintf(stderr, "[line %d] ERROR: %s\n", line, msg);
-    has_error = true;
+    klang_has_error = true;
+}
+
+
+void klang_error_reset(void) {
+    klang_has_error = false;
 }
