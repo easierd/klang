@@ -3,6 +3,8 @@
 #include <stdlib.h>
 
 #include "scanner.h"
+#include "vector.h"
+#include "token.h"
 
 
 enum {
@@ -11,14 +13,13 @@ enum {
 
 
 void run(char *line) {
-    struct Token *tokens = NULL;
-    size_t n_tokens = scan_tokens(line, &tokens);
-    for (size_t i = 0; i < n_tokens; i++) {
-        token_print(tokens + i);
+    struct Vector *tokens = scan_tokens(line);
+    for (size_t i = 0; i < tokens->sz; i++) {
+        token_print((struct Token*)vector_get(tokens, i));
         putchar('\n');
     }
 
-    free_tokens(tokens, n_tokens);
+    vector_free(tokens, token_free);
 }
 
 

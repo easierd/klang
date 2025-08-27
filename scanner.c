@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "token.h"
 #include "scanner.h"
 
 
@@ -19,69 +20,41 @@ char *lex_malloc(char *line, size_t len, size_t pos) {
 }
 
 
-bool append_token(struct Token token_list[], size_t *pos, enum TokenType type, size_t lex_len, char *line, int i) {
-    token_list[*pos].type = type;
+bool append_token(struct Vector *token_list, enum TokenType type, size_t lex_len, char *line, int i) {
     char *lex = lex_malloc(line, lex_len, i);
     if (lex == NULL) {
         return false;
     }
-    token_list[*pos].lexeme = lex;
-    (*pos)++;
+    struct Token *t = token_new(type, lex);
+    if (t == NULL) {
+        return false;
+    }
 
-    return true;
+    return vector_push_back(token_list, t);
 }
 
 
-size_t scan_tokens(char *line, struct Token **tokens) {
-    struct Token *token_list = malloc(sizeof(struct Token) * 16);
+struct Vector *scan_tokens(char *line) {
+    struct Vector *token_list = vector_new();
     if (token_list == NULL) {
-        perror("scan_tokens");
-        return 0;
+        return NULL;
     }
-
-    size_t k = 0;
-
     for (int i = 0; line[i] != 0; i++) {
         switch(line[i]) {
             case '(':
-                if (!append_token(token_list, &k, LEFT_PAREN, 1, line, i)) {
-                    free(token_list);
-                    return 0;
+                if (!append_token(token_list, LEFT_PAREN, 1, line, i)) {
+                    vector_free(token_list, token_free);
+                    return NULL;
                 }
                 break;
-
             case ')':
-                if (!append_token(token_list, &k, RIGHT_PAREN, 1, line, i)) {
-                    free(token_list);
-                    return 0;
+                if (!append_token(token_list, RIGHT_PAREN, 1, line, i)) {
+                    vector_free(token_list, token_free);
+                    return NULL;
                 }
                 break;
         }
     }
 
-    *tokens = token_list;
-    return k;
-}
-
-
-void free_tokens(struct Token tokens[], size_t len) {
-    for (size_t i = 0; i < len; i++) {
-        free((tokens + i)->lexeme);
-    }
-    free(tokens);
-}
-
-
-const char *token_type_name(enum TokenType type) {
-    static const char *name[] = {
-        "LEFT_PAREN",
-        "RIGHT_PAREN",
-    };
-
-    return name[type];
-}
-
-
-void token_print(struct Token *token) {
-    printf("%s %s", token_type_name(token->type), token->lexeme);
+    return token_list;
 }
