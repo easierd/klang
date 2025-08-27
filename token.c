@@ -31,6 +31,13 @@ const char *token_type_name(enum TokenType type) {
         "RIGHT_PAREN",
         "LEFT_BRACE",
         "RIGHT_BRACE",
+        "COMMA",
+        "DOT",
+        "SEMICOLON",
+        "MINUS",
+        "PLUS",
+        "STAR",
+        "SLASH"
     };
 
     return name[type];

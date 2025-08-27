@@ -1,6 +1,18 @@
-#pragma once
-#include <stdio.h>
+/*
+ * Error utilites for the KLANG interpreter
+ */
 
-void error(int line, char *msg) {
-    fprintf(stderr, "[line %d] ERROR: %s\n", line, msg);
-}
+#pragma once
+
+#include <stdbool.h>
+
+/*
+ * Global variable used to signal errors among the 
+ * components of the interpreter
+ */
+extern bool has_error;
+
+/*
+ * Report an error message, occurred at the given line, on stderr
+ */
+void error_report(int line, char *msg);

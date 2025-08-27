@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "scanner.h"
+#include "error.h"
 #include "vector.h"
 #include "token.h"
 
@@ -57,6 +58,7 @@ void run_script(char *filename) {
 
     buffer[flength] = 0;
     run(buffer);
+
     free(buffer);
 }
 
@@ -67,6 +69,7 @@ void run_prompt() {
     printf("klang> ");
     while (fgets(buffer, BUF_MAX, stdin)) {
         run(buffer);
+        has_error = false;
         printf("klang> ");
     }
 
