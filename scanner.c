@@ -7,21 +7,26 @@
 #include "scanner.h"
 
 
-char *lex_malloc(char *line, size_t len, size_t pos) {
+static char *scan_line;
+static int current = 0;
+static int start = 0;
+
+
+char *lex_malloc(size_t len) {
     char *lex = malloc(len + 1);
     if (lex == NULL) {
         perror("scan_tokens");
         return NULL;
     }
-    strncpy(lex, line + pos, len);
+    strncpy(lex, scan_line + start, len);
     lex[len] = 0;
 
     return lex;
 }
 
 
-bool append_token(struct Vector *token_list, enum TokenType type, size_t lex_len, char *line, int i) {
-    char *lex = lex_malloc(line, lex_len, i);
+bool append_token(struct Vector *token_list, enum TokenType type) {
+    char *lex = lex_malloc(current - start);
     if (lex == NULL) {
         return false;
     }
@@ -35,20 +40,37 @@ bool append_token(struct Vector *token_list, enum TokenType type, size_t lex_len
 
 
 struct Vector *scan_tokens(char *line) {
+    scan_line = line;
+
     struct Vector *token_list = vector_new();
     if (token_list == NULL) {
         return NULL;
     }
-    for (int i = 0; line[i] != 0; i++) {
-        switch(line[i]) {
+
+    while (scan_line[current]){
+        start = current;
+        char c = scan_line[current++];
+        switch(c) {
             case '(':
-                if (!append_token(token_list, LEFT_PAREN, 1, line, i)) {
+                if (!append_token(token_list, LEFT_PAREN)) {
                     vector_free(token_list, token_free);
                     return NULL;
                 }
                 break;
             case ')':
-                if (!append_token(token_list, RIGHT_PAREN, 1, line, i)) {
+                if (!append_token(token_list, RIGHT_PAREN)) {
+                    vector_free(token_list, token_free);
+                    return NULL;
+                }
+                break;
+            case '{':
+                if (!append_token(token_list, LEFT_BRACE)) {
+                    vector_free(token_list, token_free);
+                    return NULL;
+                }
+                break;
+            case '}':
+                if (!append_token(token_list, RIGHT_BRACE)) {
                     vector_free(token_list, token_free);
                     return NULL;
                 }

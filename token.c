@@ -29,6 +29,8 @@ const char *token_type_name(enum TokenType type) {
     static const char *name[] = {
         "LEFT_PAREN",
         "RIGHT_PAREN",
+        "LEFT_BRACE",
+        "RIGHT_BRACE",
     };
 
     return name[type];
