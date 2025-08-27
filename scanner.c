@@ -80,6 +80,36 @@ struct Vector *scan_tokens(char *line) {
                     goto cleanup;
                 }
                 break;
+            case ',':
+                if (!append_token(token_list, COMMA)) {
+                    goto cleanup;
+                }
+                break;
+            case '.':
+                if (!append_token(token_list, DOT)) {
+                    goto cleanup;
+                }
+                break;
+            case ';':
+                if (!append_token(token_list, SEMICOLON)) {
+                    goto cleanup;
+                }
+                break;
+            case '-':
+                if (!append_token(token_list, MINUS)) {
+                    goto cleanup;
+                }
+                break;
+            case '+':
+                if (!append_token(token_list, PLUS)) {
+                    goto cleanup;
+                }
+                break;
+            case '*':
+                if (!append_token(token_list, STAR)) {
+                    goto cleanup;
+                }
+                break;
             default:
                 char err[32];
                 snprintf(err, 32, "Unexpected character %c", c); 
@@ -89,6 +119,7 @@ struct Vector *scan_tokens(char *line) {
     }
 
     return token_list;
+
 cleanup:
     vector_free(token_list, token_free);
     return NULL;
