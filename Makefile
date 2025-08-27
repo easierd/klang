@@ -8,7 +8,7 @@ vector.o: vector.c vector.h
 token.o: token.c token.h
 	gcc -c $(GCC_OPTIONS) token.c
 
-scanner.o: scanner.c scanner.h 
+scanner.o: scanner.c scanner.h error.h
 	gcc -c $(GCC_OPTIONS) scanner.c
 
 klang: main.c scanner.o scanner.h vector.o vector.h token.o token.h
@@ -21,7 +21,7 @@ d_vector.o: vector.c vector.h
 d_token.o: token.c token.h
 	gcc -g -c -o d_token.o $(GCC_DEBUG_OPTIONS) token.c
 
-d_scanner.o: scanner.c scanner.h
+d_scanner.o: scanner.c scanner.h error.h
 	gcc -g -c -o d_scanner.o $(GCC_DEBUG_OPTIONS) scanner.c
 
 debug: main.c d_scanner.o scanner.h d_vector.o vector.h d_token.o token.h

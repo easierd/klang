@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,6 +6,7 @@
 
 #include "token.h"
 #include "scanner.h"
+#include "error.h"
 
 
 static char *scan_line;
@@ -41,6 +43,8 @@ bool append_token(struct Vector *token_list, enum TokenType type) {
 
 struct Vector *scan_tokens(char *line) {
     scan_line = line;
+    current = 0;
+    start = 0;
 
     struct Vector *token_list = vector_new();
     if (token_list == NULL) {
@@ -50,6 +54,11 @@ struct Vector *scan_tokens(char *line) {
     while (scan_line[current]){
         start = current;
         char c = scan_line[current++];
+
+        if (isspace(c)) {
+            continue;
+        }
+
         switch(c) {
             case '(':
                 if (!append_token(token_list, LEFT_PAREN)) {
@@ -75,6 +84,11 @@ struct Vector *scan_tokens(char *line) {
                     return NULL;
                 }
                 break;
+            default:
+                char err[32];
+                snprintf(err, 32, "Unexpected character %c", c); 
+                err[31] = 0;
+                error(0, err);
         }
     }
 
