@@ -41,7 +41,7 @@ struct Vector *vector_new() {
 }
 
 
-void vector_free(struct Vector *v, void (*free_callback)(void *)) {
+void vector_delete(struct Vector *v, void (*free_callback)(void *)) {
     if (free_callback != NULL) {
         for (size_t i = 0; i < v->sz; i++) {
             free_callback(v->items[i]);

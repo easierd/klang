@@ -14,9 +14,11 @@ enum {
 
 
 void run(char *line) {
-    struct Scanner s;
-    scanner_init(&s, line);
-    struct Vector *tokens = scan_tokens(&s, line);
+    struct Scanner *scanner = scanner_new(line);
+    if (scanner == NULL) {
+        exit (1);
+    }
+    struct Vector *tokens = scan_tokens(scanner);
 
     if (tokens == NULL) {
         exit(1);
@@ -27,7 +29,8 @@ void run(char *line) {
         putchar('\n');
     }
 
-    vector_free(tokens, token_free);
+    scanner_delete(scanner);
+    vector_delete(tokens, token_delete);
 }
 
 

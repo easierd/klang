@@ -50,4 +50,4 @@ void *vector_get(struct Vector *v, size_t pos);
  * N.B. The callback is called as-is; it's the programmer's responsibility
  * to guarantee that the function properly frees the memory.
  */
-void vector_free(struct Vector *v, void (*free_callback)(void*));
+void vector_delete(struct Vector *v, void (*free_callback)(void*));

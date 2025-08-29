@@ -18,7 +18,7 @@ struct Token *token_new(enum TokenType type, char *lexeme) {
 }
 
 
-void token_free(void *t) {
+void token_delete(void *t) {
     struct Token *tok = (struct Token*) t;
     free(tok->lexeme);
     free(tok);

@@ -40,7 +40,7 @@ struct Token *token_new(enum TokenType type, char *lexeme);
  * N.B. It's responsibility of the caller to guarantee that
  * the pointer points to a proper Token.
  */
-void token_free(void *);
+void token_delete(void *);
 
 
 /*

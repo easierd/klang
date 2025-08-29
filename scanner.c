@@ -9,10 +9,23 @@
 #include "error.h"
 
 
-void scanner_init(struct Scanner *s, char *line) {
+struct Scanner *scanner_new(char *line) {
+    struct Scanner *s = malloc(sizeof(struct Scanner));
+    if (s == NULL) {
+        perror("scanner_new");
+        return NULL;
+    }
+
     s->line = line;
     s->start = 0;
     s->current = 0;
+
+    return s;
+}
+
+
+void scanner_delete(struct Scanner *scanner) {
+    free(scanner);
 }
 
 
@@ -43,7 +56,7 @@ bool append_token(struct Scanner *s, struct Vector *token_list, enum TokenType t
 }
 
 
-struct Vector *scan_tokens(struct Scanner *s, char *line) {
+struct Vector *scan_tokens(struct Scanner *s) {
     struct Vector *token_list = vector_new();
     if (token_list == NULL) {
         return NULL;
@@ -119,6 +132,6 @@ struct Vector *scan_tokens(struct Scanner *s, char *line) {
     return token_list;
 
 cleanup:
-    vector_free(token_list, token_free);
+    vector_delete(token_list, token_delete);
     return NULL;
 }
