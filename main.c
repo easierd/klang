@@ -15,6 +15,11 @@ enum {
 
 void run(char *line) {
     struct Vector *tokens = scan_tokens(line);
+
+    if (tokens == NULL) {
+        exit(1);
+    }
+
     for (size_t i = 0; i < tokens->sz; i++) {
         token_print((struct Token*)vector_get(tokens, i));
         putchar('\n');

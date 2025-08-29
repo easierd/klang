@@ -8,7 +8,6 @@
 #include "scanner.h"
 #include "error.h"
 
-
 static char *scan_line;
 static int current = 0;
 static int start = 0;
