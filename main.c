@@ -14,7 +14,9 @@ enum {
 
 
 void run(char *line) {
-    struct Vector *tokens = scan_tokens(line);
+    struct Scanner s;
+    scanner_init(&s, line);
+    struct Vector *tokens = scan_tokens(&s, line);
 
     if (tokens == NULL) {
         exit(1);
