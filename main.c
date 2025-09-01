@@ -24,9 +24,11 @@ void run(char *line) {
         exit(1);
     }
 
-    for (size_t i = 0; i < tokens->sz; i++) {
-        token_print((struct Token*)vector_get(tokens, i));
-        putchar('\n');
+    if (!klang_has_error) {
+        for (size_t i = 0; i < tokens->sz; i++) {
+            token_print((struct Token*)vector_get(tokens, i));
+            putchar('\n');
+        }
     }
 
     scanner_delete(scanner);

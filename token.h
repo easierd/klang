@@ -14,7 +14,16 @@ enum TokenType {
     MINUS,
     PLUS,
     STAR,
-    SLASH
+    SLASH,
+
+    BANG,
+    BANG_EQUAL,
+    EQUAL,
+    EQUAL_EQUAL,
+    GREATER,
+    GREATER_EQUAL,
+    LOWER,
+    LOWER_EQUAL,
 };
 
 

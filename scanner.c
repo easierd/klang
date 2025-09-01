@@ -66,10 +66,6 @@ struct Vector *scan_tokens(struct Scanner *s) {
         s->start = s->current;
         char c = s->line[s->current++];
 
-        if (isspace(c)) {
-            continue;
-        }
-
         switch(c) {
             case '(':
                 if (!append_token(s, token_list, LEFT_PAREN)) {
@@ -121,7 +117,36 @@ struct Vector *scan_tokens(struct Scanner *s) {
                     goto cleanup;
                 }
                 break;
+            case '!':
+                if (s->line[s->current] == '=') {
+                    s->current++;
+                    if (!append_token(s, token_list, BANG_EQUAL)) {
+                        goto cleanup;
+                    }
+                    break;
+                }
+
+                if (!append_token(s, token_list, BANG)) {
+                    goto cleanup;
+                }
+                break;
+            case '=':
+                if (s->line[s->current] == '=') {
+                    s->current++;
+                    if (!append_token(s, token_list, EQUAL_EQUAL)) {
+                        goto cleanup;
+                    }
+                } else {
+                    if (!append_token(s, token_list, EQUAL)) {
+                        goto cleanup;
+                    }
+                }
+                break;
             default:
+                if (isspace(c)) {
+                    break;
+                }
+
                 char err[32];
                 snprintf(err, 32, "Unexpected character %c", c); 
                 err[31] = 0;
